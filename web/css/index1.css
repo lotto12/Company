@@ -1,0 +1,110 @@
+@charset "UTF-8";
+
+html{
+    background:url(../images/img_login_bg.jpg) repeat-x center top #000000;
+}
+body{
+    font-family: Arial, sans-serif, 新細明體;
+    width: 100%;
+    margin: 0px auto;
+    padding: 0px;
+    font-size: 15px;
+    text-align: center;
+    border:0;
+}
+body header{
+    background:url(../images/login.png) no-repeat center;
+    height:auto;
+    padding-top:340px;
+}
+body .loginmain{
+    height:auto;
+    text-align: left;
+    margin:  auto 0;
+}
+body .loginmain .content{
+   /*background:url(../images/loginbg.png) no-repeat center;*/
+   width: 349px;
+   height: 261px;
+   margin:0 auto; 
+background: rgb(183,222,237); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(183,222,237,1) 0%, rgba(113,206,239,1) 50%, rgba(33,180,226,1) 51%, rgba(183,222,237,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(183,222,237,1) 0%,rgba(113,206,239,1) 50%,rgba(33,180,226,1) 51%,rgba(183,222,237,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(183,222,237,1) 0%,rgba(113,206,239,1) 50%,rgba(33,180,226,1) 51%,rgba(183,222,237,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#b7deed', endColorstr='#b7deed',GradientType=0 ); /* IE6-9 */
+
+  border-radius: 25px;
+    height:156px; /*221px-65*/
+    margin-top:-60px;
+    padding-top:65px;
+    text-align: center;
+}
+body .loginmain .content table{
+
+    height: 140px;
+    border-collapse: separate;
+    margin: 0px auto;
+    padding: 0px;
+    border-spacing: 2px;
+}
+body .loginmain .content table tbody{
+    width:246px;
+    height:140px;
+    margin-top:65px;
+}
+body .loginmain .content table tr{}
+body .loginmain .content table tr td{
+    line-height: 34px;
+    color: #000;
+    font-size: 18px;
+}
+body .loginmain .content table tr td .inputcss{
+    width: 175px;
+    height: 18px;
+    height: 20px;
+    font-size: 18px;
+    vertical-align: middle;
+    margin-left: 5px;
+    float: left;
+}
+/*body .loginmain .content table tr td a{
+        width: 98px;
+        height: 25px;
+        display: block;
+        background: url(../images/btn_login_enter.png) no-repeat;
+        background-size:98px 25px;
+        margin: 0 auto;
+}*/
+body .browser{
+    width: 320px;
+    margin: 5px auto 0;
+    font-size: 12px;
+    line-height: 2;
+    text-align: left;
+    color: #fff;
+}
+body .browser a{
+    color: #FFF000;
+    margin: 0 5px;
+    padding: 0;
+    font-size: 12px;
+    display: inline;
+    line-height: 12px;
+    text-decoration: underline;
+}
+body .download{
+    width: 300px;
+    margin: 10px auto;
+}
+body .download img{
+    float: left;
+}
+body .download a.link1{
+    float: left;
+    height: 50px;
+    line-height: 50px;
+    font-size: 28px;
+    font-weight: bold;
+    text-decoration: underline;
+    color: #fff;
+}

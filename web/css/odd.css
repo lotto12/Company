@@ -1,0 +1,55 @@
+section .bet_info{
+	border:1px solid #DA8644;
+	width:190px;
+	height:auto;
+	float:left;
+	color:#fff;
+}
+section .bet_info table{
+	font-size:14px;
+	width:100%;
+	padding:5px;
+}
+section .bet_info .table2{
+	
+}
+section .bet_info .table1 tr{}
+section .bet_info .table1 tr td.header{
+	text-align:center; 
+	font-size:16px;
+}
+section .bet_info .table1 tr td{}
+section .bet_info .table1 tr td span.infoprice{color:#E9904E;}
+section .bet_info .nextbutton{
+	width:93%;
+	height:40px;
+	color:#fff;
+	background-color:rgba(146,106,46,1.00);
+	margin:5px;
+}
+section .bet_info .table2 tr{}
+section .bet_info .table2 tr.header td{
+	color:#fff;
+	background-color:rgba(218,134,68,1.00);
+}
+section .bet_info .table2 tr td{
+	text-align:center;
+	color:#333;
+	height:30px;
+}
+section .bet_info .table2 tr td a img{
+	width:20px;
+	height:auto;
+	display:block;
+	margin:0 auto;
+}
+section .bet_info p {
+	margin:5px;
+	font-size:14px;
+}
+section .bet_info button{
+	width:75px;
+	height:30px;
+	margin:4px;
+	font-weight:bolder;
+}

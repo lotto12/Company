@@ -1,0 +1,224 @@
+@charset "UTF-8";
+iframe{
+	padding: 0;
+	border:0; 
+	margin:0; 
+}
+body{
+	 /*background: rgb(76,76,76);*/
+	 background-color:gray;
+	font-family:微軟正黑體,"Microsoft Jheng Hei",sans-serif;
+	color:#333;
+	font-size:1em;
+	font-weight:none;
+	list-style:none;
+	text-decoration:none;
+	margin: 0 auto;
+
+	padding: 0;
+	border:0; 
+}
+.wrap{
+background: rgb(125,126,125); /* Old browsers */
+background: -moz-linear-gradient(top, rgba(125,126,125,1) 0%, rgba(14,14,14,1) 100%); /* FF3.6-15 */
+background: -webkit-linear-gradient(top, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* Chrome10-25,Safari5.1-6 */
+background: linear-gradient(to bottom, rgba(125,126,125,1) 0%,rgba(14,14,14,1) 100%); /* W3C, IE10+, FF16+, Chrome26+, Opera12+, Safari7+ */
+filter: progid:DXImageTransform.Microsoft.gradient( startColorstr='#7d7e7d', endColorstr='#0e0e0e',GradientType=0 ); /* IE6-9 */
+
+    width: 1366px;
+	height:auto;
+    margin: 0 auto;
+    padding: 0 34px 16.5px;
+}
+.wrap header {
+    font-size: 15px;
+    font-weight: bold;
+	width:100%;
+	height:130px;
+}
+/* ---------------------時間  time------------------------*/
+.wrap header .time{
+	/*background:rgba(130,162,180,1.00);*/
+	/*width:500px;*/
+	width:40%;
+	display:inline-block;
+	float:right;
+	height:20px;
+	margin:2px 0px 0 0;
+	color:#fff;
+
+}
+.wrap header .time .timecolor{color:rgba(225,209,42,1.00);}
+
+
+/* ---------------------        logo------------------------*/
+
+.wrap header .logo{
+	/*background: rgba(155, 155, 155, .5);*/
+	background-image:url(../images/logo.png);
+    background-size: 100%;
+    background-repeat: no-repeat;
+    background-position-y: 10px;
+    width: 135px;
+    height:70px;
+    display: inline-block;
+    margin: 19.5px -16px 0 7.5px;
+	float:left;
+}
+
+/* ---------------------玩的種類  method------------------------*/
+
+.wrap header .method {
+	/*background-color:rgba(217,131,133,1.00);*/
+	width: 160px;
+    height:70px;
+    display: inline-block;
+    /*margin: 19.5px -16px 0 50px;*/
+	margin: 23px -16px 0 50px;
+	float:left;
+}
+.wrap header .method a{
+	background-color:rgba(230,190,78,1.00);
+	display:block;
+	float:left;
+	font-size:16px;
+	color:#fff;
+	text-align:center;
+	line-height:45px;
+	color:rgba(255,255,255,1.00);
+	list-style-type:none;
+	text-decoration:none;
+	width:45px;
+	height:45px;
+	margin-top:20px;
+	margin-right:8px;
+	border-radius:25px;
+	-moz-border-radius:25px;
+	-ms-border-radius:25px;
+	-o-border-radius:25px;
+	-webkit-border-radius:25px
+}
+.wrap header .method a:first-child{background-color:rgba(21,161,116,1.00);}
+.wrap header .method a:last-child{background-color:rgba(207,60,62,1.00);}
+
+
+.wrap header .method a:active{background-color:rgba(230,190,78,1.00);margin-top:29px;}
+.wrap header .method a:first-child:active{background-color:rgba(21,161,116,1.00);margin-top:29px;}
+.wrap header .method a:last-child:active{background-color:rgba(207,60,62,1.00);margin-top:29px;}
+
+/* ---------------------大標  mainnav------------------------*/
+
+.wrap header .mainnav{
+	/*background:rgba(188,132,64,1.00);*/
+	float:right;
+	width:880px;
+	height:35px;
+	margin: 0px 0px 0 0px;
+	border-radius:20px;
+	background:rgba(0,0,0,0.59);
+}
+.wrap header .mainnav ul{
+	/*background:rgba(43,103,177,1.00);*/
+	display:block;
+	margin:10px 0 0 0px;
+}
+.wrap header .mainnav ul li{
+	list-style-type:none;
+	float:left;
+	width:80px;
+	height:30px;
+	text-align: justify;
+	margin-right:10px;
+}
+.wrap header .mainnav ul li a{
+	text-decoration:none;
+	color:#CBCBCB;
+	font-size:1em;
+	text-align:center;
+    letter-spacing: 1px;
+}
+.wrap header .mainnav a:hover{
+	color:#fff;
+}
+
+/* ---------------------會員資料  info------------------------*/
+
+.wrap header .info{
+	/*background:rgba(130,162,180,1.00);*/
+	width:50%;
+	display:inline-block;
+	float:right;
+	height:20px;
+	margin:3px 0px 0 0;
+}
+.wrap header .info a{
+	/*background:rgba(48,137,158,1.00);*/
+	width:60px;
+	margin-right:10px;
+	color:#fff;
+}
+.wrap header .info span{
+	color:rgba(225,209,42,1.00);
+}
+
+/* ---------------------小標  playnav------------------------*/
+
+.wrap .playnav{
+	background-color:rgba(21,161,116,1.00);
+	/*background:rgba(188,132,64,1.00);*/
+	float:left;
+	width:1150px;
+	height:30px;
+	/*margin: 10px -16px 0 150px;*/
+	margin-left:150px;
+	margin-top:-40px;
+	text-align:center;
+	border-radius:20px;
+}
+.wrap .playnav ul{
+	display:block;
+}
+.wrap .playnav ul li{
+	/*background:rgba(69,154,158,1.00);*/
+	list-style-type:none;
+	text-align-last:none;
+	float:left;
+	width:100px;
+	height:auto;
+	text-align: center;
+	margin:0 auto;
+	margin-top:-12px;
+	
+	margin-left:20px;
+	/*border-right:1px solid #fff;*/
+}
+.wrap .playnav ul li:last-child{border:none;}
+.wrap .playnav a{
+	/*background:rgba(235,57,60,1.00);*/
+	text-decoration:none;
+	color:#fff;
+	font-size:1em;
+	text-align:center;
+    letter-spacing: 2px;
+	line-height:16px;
+}
+.wrap .playnav a a:nth-child(7):first-letter {}
+.wrap .playnav ul li:hover{border-bottom:3px solid #fff;}
+
+/* ---------------------跑馬燈  marquee------------------------*/
+.wrap marquee{
+	background:#D8B053;
+	margin-top:0px;
+	margin-bottom: 10px;
+	color:#fff;
+	font-size:14px;
+	line-height:5px;
+	float:left;
+	width:100%;
+	height:30px;
+}
+.wrap marquee p{
+	display:inline-block;
+	margin-right:20px;
+
+}

@@ -1,0 +1,38 @@
+@charset "UTF-8";
+iframe{
+    padding: 0;
+    margin:0; 
+    border:0; 
+}
+body{
+    /*background: rgb(76,76,76);*/
+    background-color:gray;
+    font-family:微軟正黑體,"Microsoft Jheng Hei",sans-serif;
+    color:#333;
+    font-size:1em;
+    font-weight:none;
+    list-style:none;
+    text-decoration:none;
+
+    margin: 0;
+    padding: 0;
+    border:0; 
+}
+.wrap{
+    background-color:gray;
+    width: 100%;
+    height: auto;
+    margin: 0;
+    padding: 0;
+    border:0; 
+}
+.wrap section {
+    width: 1366px;
+    height:auto;
+    margin: 0 auto;
+
+    padding: 0 34px 16.5px;
+    font-size: 15px;
+    font-weight: bold;
+    border:1px solid black;
+}

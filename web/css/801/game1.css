@@ -1,0 +1,154 @@
+/* ---------------------左二  bet_price------------------------*/
+.bet_price{
+	width:190px;
+	height:auto;
+	float:left;
+	color:#fff;
+	margin-left:10px;
+	margin-right:10px;
+}
+.bet_price .table3{
+	font-size:14px;
+	width:100%;
+	padding:5px;
+	color:#fff;
+}
+.bet_price button{
+	width:80%;
+	height:25px;
+	display:block;
+	margin:0 auto;
+	font-size:14px;	
+}
+.bet_price .table3{
+}
+.bet_price .table3 tr {}
+.bet_price .table3 tr td{
+	height:30px;
+	text-align:center;
+}
+.bet_price .table3 tr td.header{
+	background-color:rgba(218,134,68,1.00);
+}
+.bet_price .table3 tr td a{
+	color:#0097FF;
+	text-decoration:none;
+	margin-right:5px;
+}
+.bet_price .table3 tr td a#red{
+	color:#E80003;
+	text-decoration:none;
+}
+.bet_price .table3 tr td a#blue{
+	color:#0097FF;
+	text-decoration:none;
+	margin:0 5px;
+}
+.bet_price .table3 tr td a#green{
+	color:#009126;
+	text-decoration:none;
+}
+/* ---------------------左三  .number------------------------*/
+.number{
+	width:760px;
+	height:auto;
+	float:left;
+	color:#fff;
+	margin-right:10px;
+}
+.number .table4{
+	font-size:14px;
+	width:100%;
+	color:#fff;
+}
+.number .table4 tr td.header{
+	background-color:rgba(218,134,68,1.00);
+}
+.number .table4 tr{
+	width:70px;
+	height:40px;
+}
+ .number .table4 tr td{
+	text-align:center;
+}
+
+/* ---------------------左三  .number 裡面的左一------------------------*/
+.number .table5{
+	width:152px;
+	border:1px solid #333;
+	background-color:rgba(174,174,174,1.00);
+}
+
+.number .table5 tr{
+	border:1px solid #333;
+}
+.number .table5 tr:active{
+	background-color:rgba(101,73,50,1.00);
+}
+
+.number .table5 tr td{
+	text-align:center;
+	color:rgba(3,118,204,1.00);
+	color:#000;
+}
+.number .table5 .header{
+	color:#fff;
+	background-color:rgba(218,134,68,1.00);	
+}
+.number .table5 .header:active{
+	background-color:rgba(218,134,68,1.00);	
+}
+.table5 .ballnumber{ color:#fff;}
+.table5 .basicprice{ color:rgba(219,1,4,1.00);}
+.table5 .betprice{ font-size:14px;color:rgba(214,0,3,1.00);}
+
+/*紅波 藍波 綠波*/
+.table5 .ballred{ display:block;width:30px;height:30px; border-radius:50%;background-color:rgba(189,0,3,1.00);color:#fff; text-align:center; margin:0 auto; line-height:30px;}
+.table5 .ballblue{display:block;width:30px;height:30px; border-radius:50%;background-color:rgba(43,119,183,1.00);color:#fff; text-align:center; margin:0 auto; line-height:30px;}
+.table5 .ballgreen{display:block;width:30px;height:30px; border-radius:50%;background-color:rgba(9,153,5,1.00);color:#fff; text-align:center; margin:0 auto; line-height:30px;}
+
+/* ---------------------右一  .list_info ------------------------*/
+
+.list_info{
+	border:1px solid #DA8644;
+	width:190px;
+	height:auto;
+	float:left;
+	color:#fff;
+}
+.list_info .table6{
+	font-size:14px;
+	width:100%;
+	color:#fff;
+}
+.list_info .table6 .header,.wrap section .list_info .table7 .header{
+	background-color:rgba(218,134,68,1.00);
+	color:#fff;
+	text-align:center;
+	width:100%;
+}
+.list_info .table6 tr{}
+.list_info .table6 tr td{
+	text-align:center;
+}
+.list_info .table6 tr td .red{color:rgba(222,2,5,1.00);}
+.list_info .table6 tr td p{
+	text-align:center;
+	display:block;
+	width:100%;
+	height:10px;
+	color:#333;
+}
+.list_info button{
+	width:80%;
+	height:25px;
+	display:block;
+	margin:0 auto;
+	font-size:14px;	
+}
+.list_info .table7{
+	width:100%;
+}
+.list_info .table7 tr td{
+	text-align:center;
+}

@@ -1,0 +1,49 @@
+/*
+To change this license header, choose License Headers in Project Properties.
+To change this template file, choose Tools | Templates
+and open the template in the editor.
+*/
+/* 
+    Created on : 2017/2/12, 下午 08:04:28
+    Author     : JimmyYang
+*/
+
+.button {
+    background-color: #0088A8; /* Green */
+    border: none;
+    color: white;
+    padding: 15px 32px;
+    text-align: center;
+    text-decoration: none;
+    display: block; 
+    width: 100%;
+    font-size: 16px;
+    margin: 4px 2px;
+    cursor: pointer;
+    -webkit-transition-duration: 0.4s; /* Safari */
+    transition-duration: 0.4s;
+}
+
+.button2:hover {
+    box-shadow: 0 12px 16px 0 rgba(0,0,0,0.24),0 17px 50px 0 rgba(0,0,0,0.19);
+}
+
+table {
+    border-collapse: collapse;
+    width: 100%;
+}
+
+th, td {
+    text-align: center;
+    padding: 8px;
+}
+
+tr:nth-child(even){background-color: #f2f2f2}
+
+th {
+    background-color: #C10066;
+    color: white;
+}
+
+a { text-decoration : none; color:#4D2078;  height: 20px; width: 130px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px ; border: 1px #A498BD solid ; filter: Blur(Add=1, Direction=45, Strength=2) ; text-align: center }
+a:hover{ text-decoration : none; color:#9900CC ; height: 20px; width: 130px; padding-top: 4px; padding-right: 4px; padding-bottom: 4px; padding-left: 4px ; border: 1px #BDAAE2 solid ; filter: Blur(Add=1, Direction=45, Strength=1) ; text-align: center }
