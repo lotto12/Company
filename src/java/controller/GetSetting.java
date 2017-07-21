@@ -66,32 +66,37 @@ public class GetSetting extends HttpServlet {
         String type = request.getParameter("type");
         String ball = request.getParameter("ball");
 
-        System.out.println("ball:" + ball);
-        String[] num_sql = getNum_SQL_str(Integer.parseInt(ball));
-        String page_str = num_sql[0];
-        String ball_str = num_sql[1];
-
-        String sql_select = "select ball_" + ball_str + " "
-                + "from game_setting_num1 where "
-                + page_str + " and gtype = " + gtype + " and type = " + type + " "
-                + "and type_sub in (1,2) order by type_sub asc";
-
-        System.out.println(sql_select);
-
         String odd = "error"; //賠率
         String back_gold = "error"; //本金
-
-        DataTable dt = DB.getDataTable(sql_select);
         String[] data = new String[2];
-        if (dt.getRow() > 0) {
-            odd = dt.getColume(0, "ball_" + ball_str);
-            back_gold = dt.getColume(1, "ball_" + ball_str);
+        System.out.println("ball:" + ball);
+        try {
+            String[] num_sql = getNum_SQL_str(Integer.parseInt(ball));
+            String page_str = num_sql[0];
+            String ball_str = num_sql[1];
 
-            //換算
-            odd = String.valueOf(Integer.parseInt(odd) / 10000);
-            back_gold = String.valueOf(Integer.parseInt(back_gold) / 100.0);
+            String sql_select = "select ball_" + ball_str + " "
+                    + "from game_setting_num1 where "
+                    + page_str + " and gtype = " + gtype + " and type = " + type + " "
+                    + "and type_sub in (1,2) order by type_sub asc";
 
+            System.out.println(sql_select);
+
+            DataTable dt = DB.getDataTable(sql_select);
+
+            if (dt.getRow() > 0) {
+                odd = dt.getColume(0, "ball_" + ball_str);
+                back_gold = dt.getColume(1, "ball_" + ball_str);
+
+                //換算
+                odd = String.valueOf(Integer.parseInt(odd) / 10000);
+                back_gold = String.valueOf(Integer.parseInt(back_gold) / 100.0);
+
+            }
+        } catch (Exception e) {
+            System.out.println("e:" + e.toString());
         }
+
         data[0] = odd;
         data[1] = back_gold;
         return data;

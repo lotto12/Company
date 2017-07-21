@@ -442,7 +442,7 @@ function getData(ball) {
             Order.price = back_gold;
             Order.pay = pay;
             Order.odds = odd;
-            Order.group_num = 1;
+            Order.group_num = getGroup_num();
             Order.stype = stype;
             Order.type = type;
 
@@ -482,5 +482,105 @@ function getData(ball) {
 
 //回傳組數
 function getGroup_num() {
+    var result;
+    switch (type) {
+        case 1: //特別號
+            result = 1;
+            break;
+        case 2: //正特碼
+            result = 1;
+            break;
+        case 3: //全車
+            result = 1;
+            break;
+        case 4: //台號
+            result = 1;
+            break;
+        case 5: //特尾三
+            result = 1;
+            break;
+        case 6: //二星
+            if (order.length > 1) {
+                //立柱
+                stype = 3;
+                result = groupSplit(2);
+            } else {
+                //連碰
+                stype = 2;
+                var data = order[0].split(",");
+                var length = data.length;
+                result = (length * (length - 1)) / 2;
+            }
+            break;
+        case 7: //三星
+            if (order.length > 1) {
+                //立柱
+                stype = 3;
+                result = groupSplit(3);
+            } else {
+                //連碰
+                stype = 2;
+                var data = order[0].split(",");
+                var length = data.length;
+                result = (length * (length - 1) * (length - 2)) / 6;
+            }
+            break;
+        case 8: //四星
+            if (order.length > 1) {
+                //立柱
+                stype = 3;
+                result = groupSplit(4);
+            } else {
+                //連碰
+                stype = 2;
+                var data = order[0].split(",");
+                var length = data.length;
+                result = (length * (length - 1) * (length - 2) * (length - 3)) / 24;
+            }
+            break;
+        case 9: //天碰二
+            break;
+        case 10: //天碰三
+            break;
+        default:
+            result = 0;
+            break;
+    }
+    return result;
+}
 
+//立柱
+function groupSplit(size) {
+    var array = [];
+    for (var i = 0; i < order.length; i++) {
+        array.push(order[i].split(",").length);
+    }
+
+    //計算開始
+    var r = []; //result
+
+    function _(t, a, n) { //tempArr, arr, num
+        if (n === 0) {
+            r[r.length] = t;
+            return;
+        }
+        for (var i = 0, l = a.length - n; i <= l; i++) {
+            var b = t.slice();
+            b.push(a[i]);
+            _(b, a.slice(i + 1), n - 1);
+        }
+    }
+    _([], array, size);
+    console.log(r);
+
+    var total = 0;
+    for (var i = 0; i < r.length; i++) {
+        var d = r[i];
+        var total_m = 1;
+        for (var j = 0; j < d.length; j++) {
+            total_m *= d[j];
+        }
+        total += total_m;
+    }
+    return total;
 }

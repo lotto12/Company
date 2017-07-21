@@ -16,7 +16,7 @@ public class Lotto {
 
     public static void main(String[] args) {
         Lotto a = new Lotto();
-        String str = a.getGameNum(new String[]{"1", "2", "3", "4"}, 2);
+        String str = a.getGameNum(new String[]{"1", "2"}, 2);
         System.out.println(str);
     }
 
@@ -66,9 +66,11 @@ public class Lotto {
                 for (i = 0; i < h; i++) {
                     if (binstr[k].charAt(i) == '1') {
                         total_m *= Integer.parseInt(number[i]);
+                        System.out.println("total_m:" + total_m + ",number:" + number[i]);
                     }
                 }
                 total += total_m;
+                System.out.println("total:" + total + ",total_m:" + total_m);
             }
         }
         //System.out.println("產生--->" + total);
