@@ -6,7 +6,7 @@
 
 var order_step = 1; //目前步驟
 var type = -1; //玩法種類
-var stype = 0; //單碰柱碰種類
+var stype = 1; //單碰柱碰種類
 var gtype; //遊戲種類--------->須從前端匯入
 
 var order = []; //注單
@@ -55,7 +55,7 @@ function nextStep() {
 //-----------------------------------------二星
                 case '21': //二星
                     type = 6;
-                    stype = 0;
+                    stype = 1;
                     break;
                 case '22': //二星連碰
                     type = 6;
@@ -70,7 +70,7 @@ function nextStep() {
 //-----------------------------------------三星
                 case '31': //三星
                     type = 7;
-                    stype = 0;
+                    stype = 1;
                     break;
                 case '32': //三星連碰
                     type = 7;
@@ -100,35 +100,35 @@ function nextStep() {
 //-----------------------------------------特別號
                 case '51': //特別號
                     type = 1;
-                    stype = 0;
+                    stype = 1;
                     break;
 //-----------------------------------------特別號
 
 //-----------------------------------------正特碼雙面
                 case '61': //正特碼雙面
                     type = 2;
-                    stype = 0;
+                    stype = 1;
                     break;
 //-----------------------------------------正特碼雙面
 
 //-----------------------------------------全車
                 case '71': //全車
                     type = 3;
-                    stype = 0;
+                    stype = 1;
                     break;
 //-----------------------------------------全車
 
 //-----------------------------------------台號
                 case '81': //台號
                     type = 4;
-                    stype = 0;
+                    stype = 1;
                     break;
 //-----------------------------------------台號
 
 //-----------------------------------------特尾三
                 case '91': //特尾三
                     type = 5;
-                    stype = 0;
+                    stype = 1;
                     break;
 //-----------------------------------------特尾三
 
@@ -163,7 +163,7 @@ function nextStep() {
 //-----------------------------------------錯誤指令
                 default:
                     type = -1;
-                    stype = 0;
+                    stype = 1;
 //-----------------------------------------錯誤指令
             }
             break;
@@ -198,6 +198,7 @@ function nextStep() {
 
 //快速鍵
 function key_set(set_type) {
+    stype = 1;
     type = set_type;
     order_step = 2;
     document.getElementById('step2').focus();
@@ -451,8 +452,8 @@ function getData(ball) {
 
             document.getElementById('set_gtype').innerHTML = Order_result.gtype;
             document.getElementById('set_remarks').innerHTML = Order_result.order_id;
-            document.getElementById('set_type').innerHTML = Order.type;
-            document.getElementById('set_stype').innerHTML = Order.stype;
+            document.getElementById('set_type').innerHTML = getType(Order.type);
+            document.getElementById('set_stype').innerHTML = getStype(Order.stype);
             document.getElementById('set_num').innerHTML = getBall_STR();
             document.getElementById('set_price').innerHTML = Order.price;
             document.getElementById('set_odds').innerHTML = Order.odds;
@@ -583,4 +584,14 @@ function groupSplit(size) {
         total += total_m;
     }
     return total;
+}
+
+function getType(chose) {
+    var types = ["特別碼", "正特碼", "全車", "台號", "特尾三", "二星", "三星", "四星", "天碰二", "天碰三"];
+    return types[chose - 1];
+}
+
+function getStype(chose) {
+    var stypes = ["單碰", "連碰", "柱碰", "連柱碰"];
+    return stypes[chose - 1];
 }

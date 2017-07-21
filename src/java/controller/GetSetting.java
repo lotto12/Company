@@ -107,17 +107,23 @@ public class GetSetting extends HttpServlet {
         double page = num / 25;
         int num_order = num - (25 * (int) page);
 
+        if (page - (int) page != 0) {
+            page++;
+        }
+
         System.out.println("num_order:" + num_order);
 
         String page_str = String.valueOf((int) page);
         String ball_str = "1"; //SQL球號
-        if (num_order != 0) {
-            ball_str = String.valueOf(num_order);
+        if (num_order == 0) {
+            num_order = num - ((int) page - 1) * 25;
         }
+        ball_str = String.valueOf(num_order);
 
         if (page < 1) {
             page_str = "1";
         }
+
         String sql_where = " page = " + page_str;
         String[] data = {sql_where, ball_str};
         return data;
