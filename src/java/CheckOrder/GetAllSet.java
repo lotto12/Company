@@ -22,7 +22,13 @@ public class GetAllSet {
         data.add(new int[]{2, 3});
         data.add(new int[]{4, 5});
         data.add(new int[]{6, 7});
+        data.add(new int[]{6, 7});
+        data.add(new int[]{6, 7, 8, 1, 2, 3});
+        data.add(new int[]{6, 7, 5, 3, 6, 2, 1});
+        data.add(new int[]{6, 7});
+        data.add(new int[]{6, 7});
 
+        //g.getAllSet_2(data);
         ArrayList<Integer> data_1 = new ArrayList<>();
         data_1.add(1);
         data_1.add(2);
@@ -30,7 +36,7 @@ public class GetAllSet {
         data_1.add(4);
 
         ArrayList d = new ArrayList();
-        g.getAllSet_1(data_1);
+        g.getAllSet_1(data_1, 2);
         //System.out.println(d);
 
     }
@@ -140,18 +146,41 @@ public class GetAllSet {
     }
 
     //連碰拆解
-    private ArrayList<int[]> getAllSet_1(ArrayList<Integer> data_1) {
-        getAllSet(data_1, 2, new ArrayList());
-        return null;
+    public ArrayList<int[]> getAllSet_1(ArrayList<Integer> data_1, int star) {
+        int size = data_1.size();
+        int total = 0;
+        data = new ArrayList();
+        switch (star) {
+            case 2:
+                total = size * (size - 1) / 2;
+                break;
+            case 3:
+                total = size * (size - 1) * (size - 2) / 6;
+                break;
+            case 4:
+                total = size * (size - 1) * (size - 2) * (size - 3) / 24;
+                break;
+        }
+        //2星        
+        getAllSet(data_1, star, new ArrayList());
+        while (true) {
+            if (data.size() == total) {
+                break;
+            }
+        }
+        return data;
     }
+
+    
+    //連碰
+    private ArrayList data;
 
     //連碰拆解
     @SuppressWarnings("unchecked")
     private void getAllSet(List values, int count, ArrayList result) {
         assert (values != null && result != null);
         if (count <= 0) {
-            System.out.println(result);
-            //分析完成
+            data.add(result);
         } else if (!values.isEmpty()) {
             Object obj = values.remove(0);
             result.add(obj);

@@ -5,23 +5,29 @@
  */
 package controller;
 
+import CheckOrder.GetAllSet;
+import CheckOrder.SpcOrderChk;
 import java.io.IOException;
 import java.io.PrintWriter;
-import java.util.Collection;
+import java.util.ArrayList;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import javax.servlet.ServletException;
 import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
-import model.DB;
-import model.DataTable;
+import org.json.JSONArray;
+import org.json.JSONException;
 import org.json.JSONObject;
 
 /**
  *
- * @author JimmyYang 取得遊戲相關設定
+ * @author Jimmy 下注測試
  */
-public class GetSetting extends HttpServlet {
+public class AddOrder extends HttpServlet {
+
+    private GetAllSet getAllSet = new GetAllSet();
 
     /**
      * Processes requests for both HTTP <code>GET</code> and <code>POST</code>
@@ -43,12 +49,45 @@ public class GetSetting extends HttpServlet {
             try {
                 if (!user_name.equals("null")) {
                     //取得權限
-                    System.out.println("test:" + request.getContextPath());
-                    obj.put("status", true);
-                    obj.put("account", user_name);
-                    String[] data = getGameSetting(request);
-                    obj.put("odd", data[0]);
-                    obj.put("back_gold", data[1]);
+                    boolean isV = false;
+
+                    String order = request.getParameter("order");
+
+                    //拆解
+                    JSONObject obj_order = new JSONObject(order);
+                    JSONArray data = obj_order.getJSONArray("data");//遊戲資料
+                    for (int i = 0; i < data.length(); i++) {
+                        JSONObject order_obj = data.getJSONObject(i);
+                        int type = order_obj.getInt("type");
+                        String num = order_obj.getString("num");
+
+                        //拆解注單                        
+                        if (type < 6) {
+                            //單號下注單
+
+                        } else {
+                            //多號下注單
+                            JSONObject result = new JSONObject(num);
+                            JSONArray array = result.getJSONArray("result");
+                            if (array.length() > 0) {
+                                //立柱
+                                ArrayList<int[]> user_order = getOrder_stype3(array);
+
+                                //全部組合
+                                ArrayList<int[]> all_set = getAllSet.getAllSet(user_order, getStar(type));
+
+                                //拆組（特殊牌型及一般牌型）
+                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, type, type);
+                                
+                            } else {
+                                //連碰
+
+                            }
+                        }
+
+                        isV = true;
+                    }
+                    obj.put("status", isV);
                     out.println(obj.toString());
                 } else {
                     obj.put("status", false);
@@ -61,80 +100,35 @@ public class GetSetting extends HttpServlet {
         }
     }
 
-    //取得遊戲相關設定
-    private String[] getGameSetting(HttpServletRequest request) {
-        String gtype = request.getParameter("gtype");
-        String type = request.getParameter("type");
-        String ball = request.getParameter("ball");
-
-        String odd = "error"; //賠率
-        String back_gold = "error"; //本金
-        String[] data = new String[2];
-        System.out.println("ball:" + ball);
-        try {
-            String page_str;
-            String ball_str;
-            if (type.equals("6") || type.equals("7") || type.equals("8")) {
-                page_str = " page = 1";
-                ball_str = "1";
-            } else {
-                String[] num_sql = getNum_SQL_str(Integer.parseInt(ball));
-                page_str = num_sql[0];
-                ball_str = num_sql[1];
-            }
-
-            String sql_select = "select ball_" + ball_str + " "
-                    + "from game_setting_num1 where "
-                    + page_str + " and gtype = " + gtype + " and type = " + type + " "
-                    + "and type_sub in (1,2) order by type_sub asc";
-
-            System.out.println(sql_select);
-
-            DataTable dt = DB.getDataTable(sql_select);
-
-            if (dt.getRow() > 0) {
-                odd = dt.getColume(0, "ball_" + ball_str);
-                back_gold = dt.getColume(1, "ball_" + ball_str);
-
-                //換算
-                odd = String.valueOf(Integer.parseInt(odd) / 10000);
-                back_gold = String.valueOf(Integer.parseInt(back_gold) / 100.0);
-
-            }
-        } catch (Exception e) {
-            System.out.println("e:" + e.toString());
+    private int getStar(int type) {
+        switch (type) {
+            case 6:
+                return 2;
+            case 7:
+                return 3;
+            case 8:
+                return 4;
+            default:
+                return 0;
         }
-
-        data[0] = odd;
-        data[1] = back_gold;
-        return data;
     }
 
-    //取得球號SQL
-    private String[] getNum_SQL_str(int num) {
-        double page = num / 25;
-        int num_order = num - (25 * (int) page);
-
-        if (page - (int) page != 0) {
-            page++;
+    //立柱處理
+    private ArrayList<int[]> getOrder_stype3(JSONArray array) {
+        ArrayList<int[]> result = new ArrayList<>();
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                JSONArray array_d = array.getJSONArray(i);
+                int[] data = new int[array_d.length()];
+                for (int j = 0; j < data.length; j++) {
+                    data[j] = array_d.getInt(j);
+                }
+                result.add(data);
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
         }
-
-        System.out.println("num_order:" + num_order);
-
-        String page_str = String.valueOf((int) page);
-        String ball_str = "1"; //SQL球號
-        if (num_order == 0) {
-            num_order = num - ((int) page - 1) * 25;
-        }
-        ball_str = String.valueOf(num_order);
-
-        if (page < 1) {
-            page_str = "1";
-        }
-
-        String sql_where = " page = " + page_str;
-        String[] data = {sql_where, ball_str};
-        return data;
+        return result;
     }
 
     // <editor-fold defaultstate="collapsed" desc="HttpServlet methods. Click on the + sign on the left to edit the code.">

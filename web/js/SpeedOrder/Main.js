@@ -271,6 +271,9 @@ document.onkeyup = function () {
                     console.log('Final:' + order_data_send);
                     alert(order_data_send);
 
+                    //傳送
+                    send_Order(order_data_send);
+
                     //重設柱單
                     reset();
 
@@ -594,4 +597,14 @@ function getType(chose) {
 function getStype(chose) {
     var stypes = ["單碰", "連碰", "柱碰", "連柱碰"];
     return stypes[chose - 1];
+}
+
+function send_Order(order) {
+    var url = "/Lotto/AddOrder?&order=" + order;
+    console.log(url);
+    $.get(url, function (data, status) {
+        var obj = JSON.parse(data);
+        var status = obj.status;
+        alert(status);
+    });
 }

@@ -12,6 +12,10 @@
         <servlet-name>GetSetting</servlet-name>
         <servlet-class>controller.GetSetting</servlet-class>
     </servlet>
+    <servlet>
+        <servlet-name>AddOrder</servlet-name>
+        <servlet-class>controller.AddOrder</servlet-class>
+    </servlet>
     <servlet-mapping>
         <servlet-name>Main</servlet-name>
         <url-pattern>/Main</url-pattern>
@@ -23,6 +27,10 @@
     <servlet-mapping>
         <servlet-name>GetSetting</servlet-name>
         <url-pattern>/GetSetting</url-pattern>
+    </servlet-mapping>
+    <servlet-mapping>
+        <servlet-name>AddOrder</servlet-name>
+        <url-pattern>/AddOrder</url-pattern>
     </servlet-mapping>
     <session-config>
         <session-timeout>
