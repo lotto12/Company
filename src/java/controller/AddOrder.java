@@ -56,9 +56,11 @@ public class AddOrder extends HttpServlet {
                     //拆解
                     JSONObject obj_order = new JSONObject(order);
                     JSONArray data = obj_order.getJSONArray("data");//遊戲資料
+                    int gtype = obj_order.getInt("gtype");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject order_obj = data.getJSONObject(i);
                         int type = order_obj.getInt("type");
+                        int stype = order_obj.getInt("stype");
                         String num = order_obj.getString("num");
 
                         //拆解注單                        
@@ -77,8 +79,8 @@ public class AddOrder extends HttpServlet {
                                 ArrayList<int[]> all_set = getAllSet.getAllSet(user_order, getStar(type));
 
                                 //拆組（特殊牌型及一般牌型）
-                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, type, type);
-                                
+                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype);
+
                             } else {
                                 //連碰
 

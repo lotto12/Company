@@ -93,22 +93,27 @@ public class SpcOrderChk {
     //檢查是否為特殊牌型
     private Chk_data isSpcGroup(int[] data_in) {
         Chk_data chk_data_result = new Chk_data();
+        //System.out.println(sql_spc_data.size());
         for (Object key : sql_spc_data.keySet()) {
-            int[] data = sql_spc_data.get(key);
+            int[] data = (int[]) sql_spc_data.get(key);
             int total = data.length; //符合特殊
             int count = 0;
-            for (int chk_data : data_in) {
-                for (int sql_data : data) {
+
+            for (int chk_data : data_in) { //使用者單號
+                for (int sql_data : data) { //ＳＱＬ比對
                     if (chk_data == sql_data) {
                         count++;
                     }
                 }
             }
+
+            //System.out.println("count:" + count + " total:" + total);
             if (total == count) {
                 //符合特殊牌型
                 chk_data_result.setCHK(true);
                 chk_data_result.setID((int) key);
             }
+
         }
         return chk_data_result;
     }
