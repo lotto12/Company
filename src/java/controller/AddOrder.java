@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
+import model.DB;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -57,37 +58,79 @@ public class AddOrder extends HttpServlet {
                     JSONObject obj_order = new JSONObject(order);
                     JSONArray data = obj_order.getJSONArray("data");//遊戲資料
                     int gtype = obj_order.getInt("gtype");
+                    String order_id = obj_order.getString("order_id");
                     for (int i = 0; i < data.length(); i++) {
                         JSONObject order_obj = data.getJSONObject(i);
                         int type = order_obj.getInt("type");
                         int stype = order_obj.getInt("stype");
                         String num = order_obj.getString("num");
 
+                        //注單資料
+                        String bet_gold = order_obj.getString("pay");
+                        String num_combin = "";
+                        String odds = order_obj.getString("odds");
+                        String group_num = order_obj.getString("group_num");
+                        String account = "1";
+                        String back_gold = String.valueOf(100 - Integer.parseInt(odds));
+                        String gold = "0";
+                        String remarks = order_id;
+
                         //拆解注單                        
                         if (type < 6) {
                             //單號下注單
-
+                            num_combin = order_obj.getString("num");
                         } else {
                             //多號下注單
                             JSONObject result = new JSONObject(num);
                             JSONArray array = result.getJSONArray("result");
-                            if (array.length() > 0) {
+                            if (array.length() > 1) {
+                                System.out.println("length:" + array.length());
+
                                 //立柱
                                 ArrayList<int[]> user_order = getOrder_stype3(array);
 
                                 //全部組合
                                 ArrayList<int[]> all_set = getAllSet.getAllSet(user_order, getStar(type));
 
-                                //拆組（特殊牌型及一般牌型）
+                                //拆組（特殊牌型及一般牌型）_TEST
                                 SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype);
 
-                            } else {
-                                //連碰
+                                //放資料庫
+                                String org_data = spc_order_chk.getORG_DATA(); //一般牌型
+                                String spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
 
+                                //一般組合
+                                num_combin = org_data;
+
+                            } else if (array.length() == 1) {
+                                //連碰
+                                ArrayList<Integer> user_order = getOrder_stype2(array);
+
+                                //全部組合
+                                ArrayList<int[]> all_set = getAllSet.getAllSet_1(user_order, getStar(type));
+
+                                //拆組（特殊牌型及一般牌型）_TEST
+                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype);
+
+                                //放資料庫
+                                String org_data = spc_order_chk.getORG_DATA(); //一般牌型
+                                String spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
+
+                                //一般組合
+                                num_combin = org_data;
                             }
                         }
 
-                        isV = true;
+                        //SQL_INSERT
+                        String sql_insert = "INSERT INTO game_warges_main (game_id , gtype , type , "
+                                + "stype , bet_gold , num , num_combin , odds,group_num ,"
+                                + " account , back_gold , gold,remarks)"
+                                + "VALUES (2, " + gtype + ", " + type + "," + stype + ","
+                                + bet_gold + ",'" + num + "','" + num_combin + "',"
+                                + odds + "," + group_num + ",'" + account + "',"
+                                + back_gold + "," + gold + ",'" + remarks + "');";
+
+                        isV = DB.query(sql_insert);
                     }
                     obj.put("status", isV);
                     out.println(obj.toString());
@@ -126,6 +169,22 @@ public class AddOrder extends HttpServlet {
                     data[j] = array_d.getInt(j);
                 }
                 result.add(data);
+            }
+        } catch (JSONException ex) {
+            Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);
+        }
+        return result;
+    }
+
+    //連碰處理
+    private ArrayList<Integer> getOrder_stype2(JSONArray array) {
+        ArrayList<Integer> result = new ArrayList<>();
+        try {
+            for (int i = 0; i < array.length(); i++) {
+                JSONArray array_d = array.getJSONArray(i);
+                for (int j = 0; j < array_d.length(); j++) {
+                    result.add(array_d.getInt(j));
+                }
             }
         } catch (JSONException ex) {
             Logger.getLogger(AddOrder.class.getName()).log(Level.SEVERE, null, ex);

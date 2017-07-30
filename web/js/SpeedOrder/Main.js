@@ -444,7 +444,7 @@ function getData(ball) {
             //柱單內容
             Order.num = getSend_BallNum();
             Order.price = back_gold;
-            Order.pay = pay;
+            Order.pay = pay * getGroup_num();
             Order.odds = odd;
             Order.group_num = getGroup_num();
             Order.stype = stype;

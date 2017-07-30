@@ -21,7 +21,7 @@ public class DB_Config {
     //資料庫
     private String db = "lottodb";
     //IP
-    private String ip = "jimmyyang.ddns.net";
+    private String ip = "127.0.0.1";
 
     public String getDB() {
         return this.db;

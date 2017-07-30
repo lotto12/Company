@@ -34,6 +34,9 @@ public class SpcOrderChk {
         this.gtype = gtype;
         this.stype = stype;
 
+        //TEST
+        showTEST(data);
+
         try {
             setSQL_SPC_DATA();
             rand_set();
@@ -45,6 +48,34 @@ public class SpcOrderChk {
         System.out.println("org:" + org_data.size() + " spc:" + spc_data.size());
     }
 
+    //TEST
+    private void showTEST(ArrayList<int[]> data) {
+        for (int[] d : data) {
+            for (int d_1 : d) {
+                System.out.print(d_1 + " ");
+            }
+            System.out.println("");
+        }
+    }
+
+    //取得特殊牌型
+    public String getSPC_DATA() {
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < spc_data.size(); i++) {
+            array.put(spc_data);
+        }
+        return array.toString();
+    }
+
+    //取得一般牌型
+    public String getORG_DATA() {
+        JSONArray array = new JSONArray();
+        for (int i = 0; i < org_data.size(); i++) {
+            array.put(org_data.get(i));
+        }
+        return array.toString();
+    }
+
     //取得資料庫中的特殊牌型
     private void setSQL_SPC_DATA() throws JSONException {
         sql_spc_data = new HashMap<>();
@@ -54,6 +85,7 @@ public class SpcOrderChk {
                 + " stype = " + stype + " and "
                 + " status = 1;";
 
+        System.out.println("sql_select:" + sql_select);
         DataTable dt = DB.getDataTable(sql_select);
         if (dt.getRow() > 0) {
             for (int i = 0; i < dt.getRow(); i++) {
@@ -99,9 +131,12 @@ public class SpcOrderChk {
             int total = data.length; //符合特殊
             int count = 0;
 
-            for (int chk_data : data_in) { //使用者單號
-                for (int sql_data : data) { //ＳＱＬ比對
+            //data_in -> 使用者的單柱
+            for (int sql_data : data) { //ＳＱＬ比對
+                System.out.println("sql_data:" + sql_data);
+                for (int chk_data : data_in) { //使用者單號
                     if (chk_data == sql_data) {
+                        System.out.println("chk_data:" + chk_data);
                         count++;
                     }
                 }
