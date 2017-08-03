@@ -18,6 +18,7 @@ import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 import model.DB;
+import model.DataTable;
 import org.json.JSONArray;
 import org.json.JSONException;
 import org.json.JSONObject;
@@ -51,6 +52,7 @@ public class AddOrder extends HttpServlet {
                 if (!user_name.equals("null")) {
                     //取得權限
                     boolean isV = false;
+                    boolean isSPC = false;
 
                     String order = request.getParameter("order");
 
@@ -70,10 +72,13 @@ public class AddOrder extends HttpServlet {
                         String num_combin = "";
                         String odds = order_obj.getString("odds");
                         String group_num = order_obj.getString("group_num");
-                        String account = "1";
+                        int account = getMemberID(user_name);
                         String back_gold = String.valueOf(100 - Integer.parseInt(odds));
                         String gold = "0";
                         String remarks = order_id;
+
+                        //特殊牌型
+                        String spc_data = null;
 
                         //拆解注單                        
                         if (type < 6) {
@@ -97,10 +102,13 @@ public class AddOrder extends HttpServlet {
 
                                 //放資料庫
                                 String org_data = spc_order_chk.getORG_DATA(); //一般牌型
-                                String spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
+                                spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
 
                                 //一般組合
                                 num_combin = org_data;
+
+                                //是否為特殊牌型
+                                isSPC = spc_order_chk.isSPC();
 
                             } else if (array.length() == 1) {
                                 //連碰
@@ -114,10 +122,13 @@ public class AddOrder extends HttpServlet {
 
                                 //放資料庫
                                 String org_data = spc_order_chk.getORG_DATA(); //一般牌型
-                                String spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
+                                spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
 
                                 //一般組合
                                 num_combin = org_data;
+
+                                //是否為特殊牌型
+                                isSPC = spc_order_chk.isSPC();
                             }
                         }
 
@@ -130,7 +141,16 @@ public class AddOrder extends HttpServlet {
                                 + odds + "," + group_num + ",'" + account + "',"
                                 + back_gold + "," + gold + ",'" + remarks + "');";
 
-                        isV = DB.query(sql_insert);
+                        int id = DB.query_id(sql_insert); //編號
+                        if (id != -1) {
+                            //放入特殊牌型
+                            if (isSPC) {
+                                System.out.println("spc_data:" + spc_data);
+                            }
+                            isV = true;
+                        }
+
+                        //isV = DB.query(sql_insert);
                     }
                     obj.put("status", isV);
                     out.println(obj.toString());
@@ -145,6 +165,18 @@ public class AddOrder extends HttpServlet {
         }
     }
 
+    //取得會員id
+    private int getMemberID(String account) {
+        String sql_select = "select id from game_member where acount = '" + account + "'";
+        DataTable dt = DB.getDataTable(sql_select);
+        int id = -1;
+        if (dt.getRow() > 0) {
+            id = Integer.parseInt(dt.getColume(0, "id"));
+        }
+        return id;
+    }
+
+    //取得星數
     private int getStar(int type) {
         switch (type) {
             case 6:

@@ -91,6 +91,20 @@ public class DB {
         return result;
     }
 
+    //下指令回傳ID
+    public static int query_id(String query_sql) {
+        int result_int = -1;
+        DB db = new DB();
+        boolean result = db.query_private(query_sql);
+        String select = "SELECT @@IDENTITY;";
+        String[][] result_s = db.getDataArray_private(select);
+        if (result_s.length > 0 && result) {
+            result_int = Integer.parseInt(result_s[0][0]);
+        }
+        db.close();
+        return result_int;
+    }
+
     //下指令_privte
     private boolean query_private(String query_sql) {
         try {

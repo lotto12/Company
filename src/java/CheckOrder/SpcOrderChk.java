@@ -33,36 +33,28 @@ public class SpcOrderChk {
         this.data = data;
         this.gtype = gtype;
         this.stype = stype;
-
-        //TEST
-        showTEST(data);
-
         try {
             setSQL_SPC_DATA();
             rand_set();
         } catch (Exception e) {
             System.out.println("SpcOrderChk_exception:" + e.toString());
         }
-
-        //TEST
-        System.out.println("org:" + org_data.size() + " spc:" + spc_data.size());
     }
 
-    //TEST
-    private void showTEST(ArrayList<int[]> data) {
-        for (int[] d : data) {
-            for (int d_1 : d) {
-                System.out.print(d_1 + " ");
-            }
-            System.out.println("");
+    //是否為特殊牌型
+    public boolean isSPC() {
+        boolean isV = false;
+        if (spc_data.size() > 0) {
+            isV = true;
         }
+        return isV;
     }
 
     //取得特殊牌型
     public String getSPC_DATA() {
         JSONArray array = new JSONArray();
         for (int i = 0; i < spc_data.size(); i++) {
-            array.put(spc_data);
+            array.put(spc_data.get(i));
         }
         return array.toString();
     }
@@ -133,10 +125,9 @@ public class SpcOrderChk {
 
             //data_in -> 使用者的單柱
             for (int sql_data : data) { //ＳＱＬ比對
-                System.out.println("sql_data:" + sql_data);
                 for (int chk_data : data_in) { //使用者單號
                     if (chk_data == sql_data) {
-                        System.out.println("chk_data:" + chk_data);
+                        //System.out.println("chk_data:" + chk_data);
                         count++;
                     }
                 }
