@@ -239,9 +239,9 @@ public class AddOrder extends HttpServlet {
         int group_gold_int = Integer.parseInt(group_num);
         int back_gold_int = Integer.parseInt(back_gold) / 10000;
 
-        int pay_d = (bet_gold_int / group_gold_int) / 100;
-        int result = (back_gold_int * pay_d) * group_gold_int;
-        return result * 10000;
+        double pay_d = (bet_gold_int / group_gold_int) / 100;
+        double result = (back_gold_int * pay_d) * group_gold_int;
+        return (int)result * 10000;
     }
 
     //取得欄位名稱
