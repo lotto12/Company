@@ -605,6 +605,21 @@ function send_Order(order) {
     $.get(url, function (data, status) {
         var obj = JSON.parse(data);
         var status = obj.status;
-        alert(status);
+        if (status === true) {
+            var spc_status = obj.spc_status;
+            var fix_status = obj.fix_status;
+
+            if (spc_status || fix_status) {
+                alert('下注成功,符合特殊牌型或固定賠牌型');
+            } else {
+                alert('下注成功');
+            }
+        }
     });
+}
+
+function isCheck_Num() {
+    for (var i = 0; i < order.length; i++) {
+
+    }
 }

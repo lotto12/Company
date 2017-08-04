@@ -53,6 +53,7 @@ public class AddOrder extends HttpServlet {
                     //取得權限
                     boolean isV = false;
                     boolean isSPC = false;
+                    boolean isFIX = false;
 
                     String order = request.getParameter("order");
 
@@ -86,6 +87,9 @@ public class AddOrder extends HttpServlet {
                         //特殊牌型
                         JSONArray spc_data = null;
 
+                        //固定牌型
+                        JSONArray fix_data = null;
+
                         //拆解注單                        
                         if (type < 6) {
                             //單號下注單
@@ -104,11 +108,12 @@ public class AddOrder extends HttpServlet {
                                 ArrayList<int[]> all_set = getAllSet.getAllSet(user_order, getStar(type));
 
                                 //拆組（特殊牌型及一般牌型）_TEST
-                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype);
+                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype, user_name);
 
                                 //放資料庫
                                 String org_data = spc_order_chk.getORG_DATA(); //一般牌型
                                 spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
+                                fix_data = spc_order_chk.getFix_DATA(); //固定牌型
 
                                 //一般組合
                                 num_combin = org_data;
@@ -116,6 +121,8 @@ public class AddOrder extends HttpServlet {
                                 //是否為特殊牌型
                                 isSPC = spc_order_chk.isSPC();
 
+                                //是否為固定陪牌型
+                                isFIX = spc_order_chk.isFix();
                             } else if (array.length() == 1) {
                                 //連碰
                                 ArrayList<Integer> user_order = getOrder_stype2(array);
@@ -124,17 +131,21 @@ public class AddOrder extends HttpServlet {
                                 ArrayList<int[]> all_set = getAllSet.getAllSet_1(user_order, getStar(type));
 
                                 //拆組（特殊牌型及一般牌型）_TEST
-                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype);
+                                SpcOrderChk spc_order_chk = new SpcOrderChk(all_set, gtype, stype, user_name);
 
                                 //放資料庫
                                 String org_data = spc_order_chk.getORG_DATA(); //一般牌型
                                 spc_data = spc_order_chk.getSPC_DATA(); //特殊牌型
+                                fix_data = spc_order_chk.getFix_DATA(); //固定牌型
 
                                 //一般組合
                                 num_combin = org_data;
 
                                 //是否為特殊牌型
                                 isSPC = spc_order_chk.isSPC();
+
+                                //是否為固定陪牌型
+                                isFIX = spc_order_chk.isFix();
                             }
                         }
 
@@ -190,12 +201,55 @@ public class AddOrder extends HttpServlet {
                                     DB.query(sql_insert_odd);
                                 }
                             }
+
+                            //放入固定牌型
+                            if (isFIX && fix_data != null) {
+                                System.out.println("fix_data:" + fix_data);
+                                for (int j = 0; j < fix_data.length(); j++) {
+                                    JSONArray obj_fix = fix_data.getJSONArray(j);
+                                    int id_ = obj_fix.getInt(0);
+                                    String data_ = obj_fix.getString(1);
+
+                                    //取得該牌型賠率
+                                    String num_ = getColumeName(type);
+
+                                    //傳入資料
+                                    String in_num = data_;
+                                    String in_combin = data_;
+                                    int in_flw_id = id;
+                                    int in_gtype = gtype;
+                                    int in_type = type;
+                                    int in_stype = stype;
+                                    int in_odds = 0;
+                                    int in_gold = 0;
+                                    int in_back_gold = 0;
+
+                                    //SQL_SELECT 本金和賠率
+                                    String sql_select_odd = "select * from game_fixed_odds where " + num_ + "open=1 and id = " + id_;
+                                    DataTable dt = DB.getDataTable(sql_select_odd);
+                                    if (dt.getRow() > 0) {
+                                        in_odds = Integer.parseInt(dt.getColume(0, num_ + "odds")) / 10000;
+                                        in_back_gold = in_gold;
+                                    }
+
+                                    //寫入資料庫
+                                    String sql_insert_odd = "INSERT INTO game_warges_special (flw_id , gtype , type , "
+                                            + " stype , num , num_combin , odds,group_num ,"
+                                            + " back_gold , class)"
+                                            + "VALUES (" + in_flw_id + ", " + in_gtype + ", " + in_type + "," + in_stype + ",'"
+                                            + in_num + "','" + in_combin + "'," + in_odds + ","
+                                            + 1 + "," + in_back_gold + ",2);";
+                                    DB.query(sql_insert_odd);
+                                }
+                            }
                             isV = true;
                         }
 
                         //isV = DB.query(sql_insert);
                     }
                     obj.put("status", isV);
+                    obj.put("spc_status", isSPC);
+                    obj.put("fix_status", isFIX);
                     out.println(obj.toString());
                 } else {
                     obj.put("status", false);
