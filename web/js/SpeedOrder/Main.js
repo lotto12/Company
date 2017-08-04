@@ -323,6 +323,19 @@ document.onkeyup = function () {
         case 27: //重設
             reset();
             break;
+        case 80: //P 增加一著
+            order.push(result);
+            var order_str = "";
+            for (var i = 0; i < order.length; i++) {
+                order_str += '第' + (i + 1) + '柱:';
+                order_str += order[i];
+                order_str += '<br>';
+            }
+            document.getElementById('order').innerHTML = order_str;
+            result = "";
+
+            document.getElementById('step2').value = result;
+            break;
     }
 };
 
@@ -418,6 +431,8 @@ function getBall_result() {
                 if (count === 2) {
                     result += ",";
                     count = 0;
+                    //判斷重複球號
+                    //isCheck_Num(result);
                 }
             }
         }
@@ -618,8 +633,8 @@ function send_Order(order) {
     });
 }
 
-function isCheck_Num() {
-    for (var i = 0; i < order.length; i++) {
-
-    }
+//確認是否有重複球號
+function isCheck_Num(str) {
+    console.log('str:' + str);
+    var check_data = str.split(',');
 }
