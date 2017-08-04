@@ -7,6 +7,8 @@ package CheckOrder;
 
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.logging.Level;
+import java.util.logging.Logger;
 import model.DB;
 import model.DataTable;
 import org.json.JSONArray;
@@ -51,12 +53,31 @@ public class SpcOrderChk {
     }
 
     //取得特殊牌型
-    public String getSPC_DATA() {
+    public JSONArray getSPC_DATA() {
         JSONArray array = new JSONArray();
         for (int i = 0; i < spc_data.size(); i++) {
-            array.put(spc_data.get(i));
+            JSONArray obj = new JSONArray();
+            try {
+                obj.put(0, String.valueOf(spc_group.get(i)));
+                obj.put(1, toJSONarray(spc_data.get(i)));
+            } catch (JSONException ex) {
+                System.out.println("json exception:" + ex.toString());
+                return null;
+            }
+            array.put(obj);
         }
-        return array.toString();
+        return array;
+    }
+
+    //轉JSONARRAY
+    private String toJSONarray(int[] data) {
+        JSONArray json = new JSONArray();
+        for (int d : data) {
+            json.put(d);
+        }
+        JSONArray json_result = new JSONArray();
+        json_result.put(json);
+        return json_result.toString();
     }
 
     //取得一般牌型

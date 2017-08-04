@@ -67,18 +67,24 @@ public class AddOrder extends HttpServlet {
                         int stype = order_obj.getInt("stype");
                         String num = order_obj.getString("num");
 
+                        //賠率換算 odds *10000
+                        int odds_result = Integer.parseInt(order_obj.getString("odds")) * 10000;
+
+                        //付錢換算 bet_gold *100
+                        int bet_gold_result = Integer.parseInt(order_obj.getString("pay")) * 100;
+
                         //注單資料
-                        String bet_gold = order_obj.getString("pay");
+                        String bet_gold = String.valueOf(bet_gold_result);
                         String num_combin = "";
-                        String odds = order_obj.getString("odds");
+                        String odds = String.valueOf(odds_result);
                         String group_num = order_obj.getString("group_num");
                         int account = getMemberID(user_name);
-                        String back_gold = String.valueOf(100 - Integer.parseInt(odds));
-                        String gold = "0";
+                        String gold = String.valueOf(100 * 10000 - Integer.parseInt(odds));
+                        int back_gold = getBack_gold(gold, bet_gold, group_num);
                         String remarks = order_id;
 
                         //特殊牌型
-                        String spc_data = null;
+                        JSONArray spc_data = null;
 
                         //拆解注單                        
                         if (type < 6) {
@@ -135,17 +141,54 @@ public class AddOrder extends HttpServlet {
                         //SQL_INSERT
                         String sql_insert = "INSERT INTO game_warges_main (game_id , gtype , type , "
                                 + "stype , bet_gold , num , num_combin , odds,group_num ,"
-                                + " account , back_gold , gold,remarks)"
+                                + " account , back_gold , gold,remarks,result)"
                                 + "VALUES (2, " + gtype + ", " + type + "," + stype + ","
                                 + bet_gold + ",'" + num + "','" + num_combin + "',"
                                 + odds + "," + group_num + ",'" + account + "',"
-                                + back_gold + "," + gold + ",'" + remarks + "');";
+                                + back_gold + "," + gold + ",'" + remarks + "','L');";
 
                         int id = DB.query_id(sql_insert); //編號
                         if (id != -1) {
                             //放入特殊牌型
-                            if (isSPC) {
+                            if (isSPC && spc_data != null) {
                                 System.out.println("spc_data:" + spc_data);
+                                for (int j = 0; j < spc_data.length(); j++) {
+                                    JSONArray obj_spc = spc_data.getJSONArray(j);
+                                    int id_ = obj_spc.getInt(0);
+                                    String data_ = obj_spc.getString(1);
+
+                                    //取得該牌型賠率
+                                    String num_ = getColumeName(type);
+
+                                    //傳入資料
+                                    String in_num = data_;
+                                    String in_combin = data_;
+                                    int in_flw_id = id;
+                                    int in_gtype = gtype;
+                                    int in_type = type;
+                                    int in_stype = stype;
+                                    int in_odds = 0;
+                                    int in_gold = 0;
+                                    int in_back_gold = 0;
+
+                                    //SQL_SELECT 本金和賠率
+                                    String sql_select_odd = "select * from game_special_group where " + num_ + "open=1 and id = " + id_;
+                                    DataTable dt = DB.getDataTable(sql_select_odd);
+                                    if (dt.getRow() > 0) {
+                                        in_odds = Integer.parseInt(dt.getColume(0, num_ + "odds")) / 10000;
+                                        in_gold = Integer.parseInt(dt.getColume(0, num_ + "gold"));
+                                        in_back_gold = in_gold;
+                                    }
+
+                                    //寫入資料庫
+                                    String sql_insert_odd = "INSERT INTO game_warges_special (flw_id , gtype , type , "
+                                            + " stype , num , num_combin , odds,group_num ,"
+                                            + " back_gold , class)"
+                                            + "VALUES (" + in_flw_id + ", " + in_gtype + ", " + in_type + "," + in_stype + ",'"
+                                            + in_num + "','" + in_combin + "'," + in_odds + ","
+                                            + 1 + "," + in_back_gold + ",1);";
+                                    DB.query(sql_insert_odd);
+                                }
                             }
                             isV = true;
                         }
@@ -187,6 +230,31 @@ public class AddOrder extends HttpServlet {
                 return 4;
             default:
                 return 0;
+        }
+    }
+
+    //算退水
+    private int getBack_gold(String back_gold, String bet_gold, String group_num) {
+        int bet_gold_int = Integer.parseInt(bet_gold) / 100;
+        int group_gold_int = Integer.parseInt(group_num);
+        int back_gold_int = Integer.parseInt(back_gold) / 10000;
+
+        int pay_d = (bet_gold_int / group_gold_int) / 100;
+        int result = (back_gold_int * pay_d) * group_gold_int;
+        return result * 10000;
+    }
+
+    //取得欄位名稱
+    private String getColumeName(int type) {
+        switch (type) {
+            case 6:
+                return "two_";
+            case 7:
+                return "three_";
+            case 8:
+                return "four_";
+            default:
+                return null;
         }
     }
 
