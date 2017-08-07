@@ -10,6 +10,7 @@ var stype = 1; //單碰柱碰種類
 var gtype; //遊戲種類--------->須從前端匯入
 
 var order = []; //注單
+var muilt = false;
 var odd;
 var back_gold;
 
@@ -244,8 +245,17 @@ document.onkeyup = function () {
                 }
                 document.getElementById('order').innerHTML = order_str;
                 result = "";
+
+                muilt = true;
             }
             document.getElementById('step2').value = result;
+
+            //判斷重複球號
+            if (!isCheck_Num()) {
+                document.getElementById('step2').value = '';
+                alert('輸入重複球號！');
+            }
+
         } else {
             //刪除
             var num_str = getBall_result();
@@ -335,6 +345,7 @@ document.onkeyup = function () {
             result = "";
 
             document.getElementById('step2').value = result;
+            muilt = true;
             break;
     }
 };
@@ -418,7 +429,7 @@ function getBall_result() {
 
     var order_data = document.getElementById('step2').value;
     var order_spilt = order_data.split("+");
-    console.log("order_spilt.length:" + order_spilt.length);
+    //console.log("order_spilt.length:" + order_spilt.length);
     for (var i = 0; i < order_spilt.length; i++) {
         order_data = order_spilt[i].replace(/,/g, "");
         console.log('order_data:' + order_data);
@@ -431,8 +442,6 @@ function getBall_result() {
                 if (count === 2) {
                     result += ",";
                     count = 0;
-                    //判斷重複球號
-                    //isCheck_Num(result);
                 }
             }
         }
@@ -634,7 +643,38 @@ function send_Order(order) {
 }
 
 //確認是否有重複球號
-function isCheck_Num(str) {
-    console.log('str:' + str);
-    var check_data = str.split(',');
+function isCheck_Num() {
+    var step2_txv = document.getElementById('step2').value;
+
+    //當時輸入的資料
+    var check_data = step2_txv.split(',');
+
+    //console.log(check_data.length);
+
+    //比對資料
+    if (check_data.length > 0) {
+        var now_type = check_data[check_data.length - 1];
+
+        for (var i = 0; i < check_data.length - 1; i++) {
+            console.log('i=' + i + ':' + check_data[i]);
+            if (now_type === check_data[i]) {
+                return false;
+            }
+        }
+
+        if (muilt) {
+            //柱資料
+            for (var i = 0; i < order.length; i++) {
+                console.log('order:' + order[i]);
+                var order_c =  order[i].split(',');
+                for (var j = 0; j < order_c.length; j++) {
+                    if (now_type === order_c[j]) {
+                        return false;
+                    }
+                }
+            }
+        }
+    }
+    return true;
+
 }
